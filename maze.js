@@ -123,37 +123,11 @@ const powerPelletPositions = [
         powerPellet.style.height = `${powerPelletSize}px`;
         powerPellet.style.position = "absolute";
         powerPellet.style.backgroundSize = "cover";
-       // powerPellet.style.backgroundColor = "yellow";
-        //powerPellet.style.borderRadius = "50%";
         powerPellet.style.top = `${pos.row * cellSize + cellSize / 2 - powerPelletSize / 2}px`;
         powerPellet.style.left = `${pos.col * cellSize + cellSize / 2 - powerPelletSize / 2}px`;
         powerPellet.style.backgroundImage = "url('assets/sprites/powerPellet.svg')";
-        // Add animation for power pellets
-       // powerPellet.style.animation = "powerPelletPulse 0.7s ease-in-out infinite";
         dotContainer.appendChild(powerPellet);
     });
-
-
-    // // Add ghost house visualization
-    // mazeGrid.forEach((row, rowIndex) => {
-    //     row.forEach((cell, colIndex) => {
-    //         if (cell === 3) {
-    //             const houseCell = document.createElement("div");
-    //             houseCell.classList.add("ghost-house-debug");
-    //             Object.assign(houseCell.style, {
-    //                 position: "absolute",
-    //                 width: `${cellSize}px`,
-    //                 height: `${cellSize}px`,
-    //                 backgroundColor: "rgba(255, 0, 0, 0.2)", // semi-transparent red
-    //                 border: "1px solid red",
-    //                 top: `${rowIndex * cellSize}px`,
-    //                 left: `${colIndex * cellSize}px`,
-    //                 zIndex: "1"
-    //             });
-    //             dotContainer.appendChild(houseCell);
-    //         }
-    //     });
-    // });
     
     // Store game state information
     window.gameState = {
@@ -232,44 +206,13 @@ document.addEventListener("DOMContentLoaded", () => {
     let x = currentGridX * CELL_SIZE + POSITION_OFFSET.x;
     let y = currentGridY * CELL_SIZE + POSITION_OFFSET.y;
 
-    //console.log(x,y)
+
     
     
     let speed = 3;
     let direction = "right";
     let nextDirection = "right";
     let isMoving = false;
-
-    // // Create debug overlay for path visualization
-    // function createDebugOverlay() {
-    //     const overlay = document.createElement('div');
-    //     overlay.style.position = 'absolute';
-    //     overlay.style.top = '0';
-    //     overlay.style.left = '0';
-    //     overlay.style.width = '100%';
-    //     overlay.style.height = '100%';
-    //     overlay.style.pointerEvents = 'none';
-    //     overlay.id = 'debug-overlay';
-        
-    //     mazeGrid.forEach((row, rowIndex) => {
-    //         row.forEach((cell, colIndex) => {
-    //             if (cell === 1) {  // If it's a path
-    //                 const pathCell = document.createElement('div');
-    //                 pathCell.style.position = 'absolute';
-    //                 pathCell.style.width = `${CELL_SIZE}px`;
-    //                 pathCell.style.height = `${CELL_SIZE}px`;
-    //                 pathCell.style.top = `${rowIndex * CELL_SIZE}px`;
-    //                 pathCell.style.left = `${colIndex * CELL_SIZE}px`;
-    //                 pathCell.style.backgroundColor = 'rgba(255, 0, 0, 0.2)';  // Semi-transparent red
-    //                 pathCell.style.border = '1px solid rgba(255, 0, 0, 0.5)';
-    //                 pathCell.style.boxSizing = 'border-box';
-    //                 overlay.appendChild(pathCell);
-    //             }
-    //         });
-    //     });
-        
-    //     document.querySelector('.maze').appendChild(overlay);
-    // }
 
     function initializePacman() {
         Object.assign(pacman.style, {
@@ -285,11 +228,6 @@ document.addEventListener("DOMContentLoaded", () => {
             transition: 'transform 0.1s ease',
             zIndex: '1000'  // Ensure Pac-Man appears above debug overlay
         });
-        
-       // pacman.innerHTML = '&#9786;';
-        
-        // Create debug overlay
-     //   createDebugOverlay();
     }
 
     function isValidMove(gridX, gridY) {
@@ -330,7 +268,7 @@ document.addEventListener("DOMContentLoaded", () => {
                Math.abs(y - gridAlignedY) < GRID_SNAP_THRESHOLD;
     }
 
-     function updatePacman() {
+    function updatePacman() {
         const currentGridX = Math.round((x - POSITION_OFFSET.x) / CELL_SIZE);
         const currentGridY = Math.round((y - POSITION_OFFSET.y) / CELL_SIZE);
 
@@ -341,15 +279,6 @@ document.addEventListener("DOMContentLoaded", () => {
                     direction = nextDirection;
                     x = currentGridX * CELL_SIZE + POSITION_OFFSET.x;
                     y = currentGridY * CELL_SIZE + POSITION_OFFSET.y;
-                    
-                    let rotation = 0;
-                    switch(direction) {
-                        case 'right': rotation = 0; break;
-                        case 'down': rotation = 90; break;
-                        case 'left': rotation = 180; break;
-                        case 'up': rotation = 270; break;
-                    }
-                    pacman.style.transform = `translate(-50%, -50%) rotate(${rotation}deg)`;
                 }
             }
         }
@@ -372,8 +301,19 @@ document.addEventListener("DOMContentLoaded", () => {
             y = currentGridY * CELL_SIZE + POSITION_OFFSET.y;
         }
 
+        // Update Pac-Man's position
         pacman.style.left = `${x}px`;
         pacman.style.top = `${y}px`;
+
+        // Update Pac-Man's rotation
+        let rotation = 0;
+        switch(direction) {
+            case 'right': rotation = 0; break;
+            case 'down': rotation = 90; break;
+            case 'left': rotation = 180; break;
+            case 'up': rotation = 270; break;
+        }
+        pacman.style.transform = `translate(-50%, -50%) rotate(${rotation}deg)`;
     }
 
     document.addEventListener("keydown", (event) => {
@@ -405,10 +345,11 @@ document.addEventListener("DOMContentLoaded", () => {
     });
 
     function gameLoop() {
+        initializePacman();
         updatePacman();
         requestAnimationFrame(gameLoop);
     }
 
-    initializePacman();
+    
     gameLoop();
 });
