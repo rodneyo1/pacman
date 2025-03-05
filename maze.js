@@ -67,7 +67,7 @@ function renderRandomDots() {
     const allPositions = [];
     mazeGrid.forEach((row, rowIndex) => {
         row.forEach((cell, colIndex) => {
-            if (cell === 1) {
+            if (cell === 1 || cell === 5 || cell === 6) {
                 allPositions.push({ row: rowIndex, col: colIndex });
             }
         });
@@ -109,7 +109,7 @@ function renderRandomDots() {
         dot.style.width = `${dotSize}px`;
         dot.style.height = `${dotSize}px`;
         dot.style.position = "absolute";
-        dot.style.backgroundColor = "pink";
+        dot.style.backgroundColor = "yellow";
         // dot.style.borderRadius = "50%";
         dot.style.top = `${pos.row * cellSize + cellSize / 2 - dotSize / 2}px`;
         dot.style.left = `${pos.col * cellSize + cellSize / 2 - dotSize / 2}px`;
@@ -134,6 +134,22 @@ function renderRandomDots() {
         // powerPellet.style.animation = "powerPelletPulse 0.7s ease-in-out infinite";
         dotContainer.appendChild(powerPellet);
     });
+
+    allPositions.forEach(pos => {
+        if (pos.type === 5 || pos.type === 6) {
+            const fruit = document.createElement('div')
+            fruit.classList.add("fruit")
+            fruit.dataset.points = pos.type === 5? "100":"200";
+            fruit.style.width = `${cellSize}px`;
+            fruit.style.height = `${cellSize}px`;
+            fruit.style.position = "absolute";
+            fruit.style.backgroundSize = "cover";
+            fruit.style.top = `${pos.row * cellSize}px`;
+            fruit.style.left = `${pos.col * cellSize}px`;
+            fruit.style.backgroundImage = pos.type === 5 ? "url('assets/sprites/cherry.png')" : "url('assets/sprites/strawberry.png')";
+            dotContainer.appendChild(fruit);
+        }
+    })
 
     // Store game state information
     window.gameState = {
