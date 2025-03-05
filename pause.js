@@ -48,16 +48,7 @@ function setupPauseMenu() {
         togglePause(); // Resume game
     });
 
-    // restartButton.addEventListener('click', function () {
-    //     // Hide pause menu
-    //     pauseMenu.style.display = 'none';
-    //     isPaused = false;
-
-    //     // Reset game
-    //     resetGame();
-    // });
-
-    quitButton.addEventListener('click', function () {
+       quitButton.addEventListener('click', function () {
         // Hide pause menu
         pauseMenu.style.display = 'none';
         isPaused = false;
